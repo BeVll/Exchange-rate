@@ -1,0 +1,34 @@
+﻿<Page x:Class="Client.Exchange"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:Client"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Exchange">
+
+    <Grid Background="#2E3238">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.9*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.9*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" >
+            <TextBlock Text="Currency exchanger" FontWeight="Bold" Foreground="#EBEBEC" HorizontalAlignment="Center" FontSize="30"/>
+            <Border Height="1" Background="#EBEBEC" Margin="0,5"/>
+            <ComboBox x:Name="cur1" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" Padding="5" Margin="0,5"/>
+            <Button Style="{DynamicResource MaterialDesignIconButton}" Height="20" Width="20">
+                <Button.Content>
+                    <materialDesign:PackIcon Kind="ArrowUpDown" Foreground="#FFEB3B" Width="20" Height="20" HorizontalAlignment="Center"/>
+                </Button.Content>
+            </Button>
+
+            <ComboBox x:Name="cur2" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" Padding="5" Margin="0,5"/>
+            <Button Margin="0,5" Height="30" Content="Exchange" Padding="0,-2,0,0" Click="Button_Click"/>
+            <TextBlock x:Name="tot" Text="EUR-UAH: 135.00 UAH" Foreground="#EBEBEC" FontWeight="Bold" FontSize="25"/>
+        </StackPanel>
+        
+    </Grid>
+</Page>
