@@ -18,16 +18,16 @@
         <StackPanel Grid.Column="1" VerticalAlignment="Center" >
             <TextBlock Text="Currency exchanger" FontWeight="Bold" Foreground="#EBEBEC" HorizontalAlignment="Center" FontSize="30"/>
             <Border Height="1" Background="#EBEBEC" Margin="0,5"/>
-            <ComboBox x:Name="cur1" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" Padding="5" Margin="0,5"/>
+            <ComboBox x:Name="cur1" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" SelectedIndex="0" Padding="5" Margin="0,5"/>
             <Button Style="{DynamicResource MaterialDesignIconButton}" Height="20" Width="20">
                 <Button.Content>
                     <materialDesign:PackIcon Kind="ArrowUpDown" Foreground="#FFEB3B" Width="20" Height="20" HorizontalAlignment="Center"/>
                 </Button.Content>
             </Button>
 
-            <ComboBox x:Name="cur2" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" Padding="5" Margin="0,5"/>
+            <ComboBox x:Name="cur2" Style="{DynamicResource MaterialDesignOutlinedComboBox}" DisplayMemberPath="Name" Padding="5" SelectedIndex="1" Margin="0,5"/>
             <Button Margin="0,5" Height="30" Content="Exchange" Padding="0,-2,0,0" Click="Button_Click"/>
-            <TextBlock x:Name="tot" Text="EUR-UAH: 135.00 UAH" Foreground="#EBEBEC" FontWeight="Bold" FontSize="25"/>
+            <TextBlock x:Name="tot"  Foreground="#EBEBEC" FontWeight="Bold" FontSize="25"/>
         </StackPanel>
         
     </Grid>

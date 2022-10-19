@@ -102,15 +102,16 @@ namespace Server
         }
         private void ReadUser(User user)
         {
-            while (server.working)
+            while (server.working && server.clients.Contains(user))
             {
-                string mes = user.GetMessage();
-                AddMessage(mes, user);
+                    string mes = user.GetMessage();
+                    AddMessage(mes, user);
             }
-           
+            reads.Remove(reads.Where(s => s.User.Id == user.Id).FirstOrDefault());
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+           
             Close();
         }
 
@@ -151,11 +152,14 @@ namespace Server
             readThread = new Thread(() => Read());
             readThread.Start();
             server_started = true;
+            AddMessage($"Server started\nMaximum request: {server.max_req}\nMaximum users: {server.max_users}");
+            btn_start.IsEnabled = false;
+            Add_User.IsEnabled = true;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            server.Disconnect();
         }
     }
 }

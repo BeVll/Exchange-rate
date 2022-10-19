@@ -22,19 +22,21 @@ namespace Exchanger
         {
             users.Add(user);
         }
+
         public void WaitConnect()
         {
-            while (working)
+            try
             {
-                
-                TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                User user2 = new User();
-                user2.Stream = tcpClient.GetStream();
-                user2.Client = tcpClient;
-                user2.Id = id;
-                id++;
-                try
+                while (working)
                 {
+
+                    TcpClient tcpClient = tcpListener.AcceptTcpClient();
+                    User user2 = new User();
+                    user2.Stream = tcpClient.GetStream();
+                    user2.Client = tcpClient;
+                    user2.Id = id;
+                    id++;
+
                     if (clients.Count < max_users)
                     {
                         string message = string.Empty;
@@ -60,6 +62,7 @@ namespace Exchanger
                                     user.Id = user2.Id;
                                     user.Stream = user2.Stream;
                                     user.Client = tcpClient;
+                                    user.request_count = 0;
                                     user.server = this;
                                     clients.Add(user);
                                     SendMessage("connected", user.Id);
@@ -87,20 +90,24 @@ namespace Exchanger
                         user2.Stream.Write(data, 0, data.Length);
                         user2.Stream.Close();
                     }
-                }
-                catch (Exception ex)
-                {
-                    Log(ex.ToString());
+
                 }
             }
+            catch (Exception ex)
+            {
+                Log(ex.ToString());
+            }
         }
+        
         public void Start()
         {
             tcpListener = new TcpListener(IPAddress.Parse(Ip), port);
             tcpListener.Start();
             working = true;
+            Log("=============Server started=============");
             Thread thread = new Thread(() => WaitConnect());
             thread.Start();
+
         }
         protected void AddConnection(User client)
         {
@@ -130,11 +137,17 @@ namespace Exchanger
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
                     sw.WriteLine(log);
+                    sw.Close();
+                    fs.Close();
                 }
             }
         }
-       
-        protected internal void Disconnect()
+        public void RemoveClient(User user)
+        {
+            Thread.Sleep(100);
+            clients.Remove(user);
+        }
+        public void Disconnect()
         {
             working = false;
             for(int i = 0; i < clients.Count; i++)
@@ -148,6 +161,7 @@ namespace Exchanger
                 clients[i].Stream.Close();
                 clients[i].Client.Close();
             }
+            Log("Server was stopped!");
             Environment.Exit(0);
         }
 

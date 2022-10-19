@@ -16,6 +16,7 @@ namespace Exchanger
         {
             try
             {
+                client = new TcpClient();
                 client.Connect(IPAddress.Parse(address), port);
                 stream = client.GetStream();
                 SendMessage($"/Login: {login} Password: {pass}");
@@ -30,11 +31,17 @@ namespace Exchanger
         }
         public void Log(string str)
         {
-            string log = $"[{DateTime.Now.ToString()}] {str}";
-            if (File.Exists("log.txt"))
-                File.AppendAllText("log.txt", log);
-            else
-                File.WriteAllText("log.txt", log);
+            lock (this)
+            {
+                string log = $"[{DateTime.Now.ToString()}] {str}";
+                using (FileStream fs = new FileStream("log.txt", FileMode.Append, FileAccess.Write))
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine(log);
+                    sw.Close();
+                    fs.Close();
+                }
+            }
         }
         public string GetExchange(string cur)
         {
@@ -78,8 +85,10 @@ namespace Exchanger
         }
         public void Close()
         {
-            client.Close();
-            stream.Close();
+            if(client != null)
+                client.Close();
+            if(stream != null)
+                stream.Close();
         }
     }
 }
